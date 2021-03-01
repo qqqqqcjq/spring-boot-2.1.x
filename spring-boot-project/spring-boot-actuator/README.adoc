@@ -1,0 +1,61 @@
+==================================================================================================
+== Spring Boot - Actuator
+
+Spring Boot Actuator includes a number of additional features to help you monitor and
+manage your application when it's pushed to production. You can choose to manage and
+monitor your application using HTTP or JMX endpoints. Auditing, health and metrics
+gathering can be automatically applied to your application. The
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready[user guide]
+covers the features in more detail.
+
+Spring Boot执行器包括许多附加功能，可以在应用程序推向生产时帮助您监视和管理应用程序。
+您可以选择使用HTTP或JMX端点管理和监视您的应用程序。审计、运行状况和指标收集可以自动应用于应用程序。
+
+Spring Boot执行器中包含许多端点的，使用HTTP或者JMX公开这些端点
+Spring Boot执行器其实也是一个独立的服务，启动后我们就可以访问这些端点
+一个应用可以启动多个ServerSocket，比如Tomcat可以启动一个ServerSocket监听普通的http请求， 同时启动一个jmx connector server监听jmx connector client的请求;
+所以一个应用可以同时启动普通的spring boot应用处理普通请求，也同时启动一个spring boot actuator处理访问端点的请求。
+
+
+分析Spring boot中@Endpoint注解的端点类，跟踪代码，我们可以知道，其实也是利用spring framework的ioc创建相关的类的实例，
+有了端点类实例，就可以调用里面的各种Operation方法进行监控
+
+==================================================================================================
+== Enabling the Actuator
+激活/启动执行器
+The simplest way to enable the features is to add a dependency to the
+`spring-boot-starter-actuator` '`Starter`'. To add the actuator to a Maven-based project,
+add the following '`Starter`' dependency:
+
+[source,xml,indent=0]
+----
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+	</dependencies>
+----
+
+For Gradle, use the following declaration:
+
+[indent=0]
+----
+	dependencies {
+		compile("org.springframework.boot:spring-boot-starter-actuator")
+	}
+----
+==================================================================================================
+
+
+== Features
+* **Endpoints** Actuator endpoints allow you to monitor and interact with your
+  application. Spring Boot includes a number of built-in endpoints and you can also add
+  your own. For example the `health` endpoint provides basic application health
+  information. Run up a basic application and look at `/actuator/health`.
+* **Metrics** Spring Boot Actuator provides dimensional metrics by integrating with
+  https://micrometer.io[Micrometer].
+* **Audit** Spring Boot Actuator has a flexible audit framework that will publish events
+  to an `AuditEventRepository`. Once Spring Security is in play it automatically publishes
+  authentication events by default. This can be very useful for reporting, and also to
+  implement a lock-out policy based on authentication failures.

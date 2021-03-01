@@ -1,0 +1,53 @@
+sping-boot-project： spring boot项目的核心代码
+    spring-boot:
+    spring-boot-autoconfigure:
+    spring-boot-actuator:
+    spring-boot-actuator-autoconfigure:
+    spring-boot-properties-migrator ： 使用META-INF/spring-configuration-metadata.json完成配置的迁移。使项目可以兼容老的配置项
+                                           {
+                                             "properties": [
+                                               {
+                                                 "name": "server.context-path",
+                                                 "type": "java.lang.String",
+                                                 "description": "Context path of the application.",
+                                                 "deprecated": true,
+                                                 "deprecation": {
+                                                   "level": "error",
+                                                   "replacement": "server.servlet.context-path"
+                                                 }
+                                               },
+                                               {
+                                                 "name": "server.servlet.context-path",
+                                                 "type": "java.lang.String",
+                                                 "description": "Context path of the application.",
+                                                 "sourceType": "org.springframework.boot.autoconfigure.web.ServerProperties$Servlet"
+                                               }
+                                           替换属性名为：server.servlet.context-path，此属性在org.springframework.boot.autoconfigure.web.ServerProperties 中，且在类中可以发现，
+                                           server.context-path 所对应的属性 ServerProperties#contextPath 在代码中已不存在
+    spring-boot-tools: 包含多个子模块
+        spring-boot-autoconfigure-processor : 里面只有一个类AutoConfigureAnnotationProcessor继承自AbstractProcessor，编译时会使用这个类生成spring-autoconfigure-metadata.properties文件
+        spring-boot-configuration-processor : 1.可以使用代码中的@ConfigurationProperties注解的类生成 META-INF/spring-configuration-metadata.json  META-INF/additional-spring-configuration-metadata.json
+                                                这样在编写application.properties/application.yml文件时， IDE就会有相关的自动提示
+                                              2.项目兼容老的配置项(参考spring-boot-properties-migrator)
+                                              3.其他功能参考官方文档
+        spring-boot-configuration-metadata : 使用META-INF/spring-configuration-metadata.json和 META-INF/additional-spring-configuration-metadata.json的一些支持工具类
+        spring-boot-loader : spring-boot-loader里的代码是对Jar文件的操作逻辑，是关于spring boot应用的打包的启动方式实现
+        spring-boot-loader-tools :  用于生成可执行JAR/WAR文件的一些工具类
+        spring-boot-test-support : 用于测试spring-boot-tools一些功能的测试相关类
+        spring-boot-antlib : 使用Apache Ant+Ivy构建Spring boot项目
+        spring-boot-gradle-plugin : 使用gradle插件，将Spring Boot应用打包为可执行的jar或war文件，然后以通常的方式运行Spring Boot应用
+        spring-boot-maven-plugin : 使用maven插件，将Spring Boot应用打包为可执行的jar或war文件，然后以通常的方式运行Spring Boot应用
+    spring-boot-cli: Spring Boot命令行接口，确保下载并解压spring boot cli，设置好相应的JAVA_HOME,SPRING_HOME，以及将SPRING_HOME配置到path中。
+                         这样我们就可以在命令行窗口运行特定的命令，就会调用到spring boot cli中的方法，比如>spring run WebApp.java
+    spring-boot-devtools : spring为开发者提供了一个名为spring-boot-devtools的模块来使Spring Boot应用支持热部署，提高开发者的开发效率，无需手动重启Spring Boot应用
+    spring-boot-docs : 为了生成spring boot相关文档构建的一个模块，不用关注
+    spring-boot-dependencies : 没有代码，不用关注
+    spring-boot-parent : 没有代码，不用关注
+    spring-boot-starters : 里面没有java代码，是spring boot整合各个组件锁需要引入的依赖，pom.xml的配置
+    spring-boot-test: : 里面是一些测试spring boot jar的代码
+    spring-boot-test-autoconfigure: 里面是一些测试spring boot autoconfigure jar 包的代码
+spring-boot-samples: 使用spirng boot的样例项目,里面几乎涵盖了目前市面上流行的各种组件与spring boot的整合
+spring-boot-samples-invoker: 里面是空的，没有代码，不用管这个
+spring-boot-tests:里面都是一些测试用的代码，包括：
+    spring-boot-deployment-tests : spring boot的部署测试(不用关注)
+    spring-boot-integration-tests : spring boot的一些集成测试
